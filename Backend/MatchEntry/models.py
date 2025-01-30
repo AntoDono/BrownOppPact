@@ -220,13 +220,13 @@ def getQuestions():
     return questions
 
 # Create your models here.
-
 class MatchEntry(models.Model):
     firstname = models.CharField(max_length=128)
     lastname = models.CharField(max_length=128)
     email = models.EmailField()
     mbti = models.CharField(max_length=4)
     embedding = models.JSONField(default=list)
+    summary = models.TextField()
 
     def __str__(self):
         return self.email

@@ -20,6 +20,6 @@ import MatchEntry.views as meViews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('entry/questions', meViews.getQuestions),
+    path('entry/questions', meViews.allQuestions),
     path('entry/create', meViews.createEntry),
 ]

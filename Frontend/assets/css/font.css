@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Nunito'; /*a name to be used later*/
+    src: url('../fonts/NunitoSans-VariableFont_YTLC\,opsz\,wdth\,wght.ttf'); /*URL to font*/
+}
+
+@font-face {
+    font-family: 'Playfair'; /*a name to be used later*/
+    src: url('../fonts/PlayfairDisplay-VariableFont_wght.ttf'); /*URL to font*/
+}

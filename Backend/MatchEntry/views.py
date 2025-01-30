@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 @csrf_exempt
-def getQuestions(request):
+def allQuestions(request):
     try:
         if request.method == "GET":
             return JsonResponse(dict(questions=getQuestions()))
@@ -14,7 +14,7 @@ def getQuestions(request):
             return HttpResponseNotFound()
     except Exception as e:
         print(e)
-        HttpResponseServerError()
+        return HttpResponseServerError()
 
 @csrf_exempt
 def createEntry(request):
@@ -24,11 +24,16 @@ def createEntry(request):
             fname = data["firstname"]
             lname = data["lastname"]
             email = data["email"]
-            embedding = data["embedding"]
             response = data["response"]
             mbti = getMBTI(response)
             
-            entry = MatchEntry(firstname=fname, lastname=lname, email=email, mbti=mbti, embedding=embedding)
+            embedding = [0] * len(response.keys())
+            for id in response.keys():
+                embedding[id] = response[id].value
+                
+            summary = ""
+            
+            entry = MatchEntry(firstname=fname, lastname=lname, email=email, mbti=mbti, embedding=embedding, summary=summary)
             entry.save()
             return HttpResponse()
         else:
