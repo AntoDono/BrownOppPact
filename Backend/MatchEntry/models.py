@@ -215,7 +215,7 @@ def additionalQuestions():
     ]
 
 def getQuestions():
-    questions = MBTIQuestions() + controversialQuestion() + additionalQuestions()
+    questions = MBTIQuestions() + viewpointQuestions() + controversialQuestion() + additionalQuestions()
     random.shuffle(questions)
     return questions
 

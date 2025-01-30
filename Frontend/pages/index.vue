@@ -2,25 +2,30 @@
     <div class="h-screen w-full bg-background1 overflow-hidden">
         <div>
             <div ref="strings">
-                <div v-for="index in 20" 
-                     class="fixed top-0 border-2 border-pink-800 w-screen h-screen origin-center spin-slow opacity-20" 
-                     :class="`rotate-${18 * index}`"
-                     :style="{
-                         animationDelay: `${-0.75 * index}s`
-                     }">
-                </div>
+                
             </div>
             <div class="fixed w-full h-full flex flex-col justify-center items-center gap-y-10 text-white">
                 <div>
-                    <h1 class="font-playfair text-5xl text-center">There is a Thin Line Between</h1>
-                    <h2 class="font-playfair text-5xl text-center">
-                        Love and Hate
-                    </h2>
+                    <h1 class="relative font-playfair text-6xl text-center z-20">There is a Thin Line Between</h1>
+                    <div>
+                        <div class="w-full flex flex-row gap-x-4 items-center justify-center">
+                            <h2 class="font-playfair text-5xl text-center">
+                                Love
+                            </h2>
+                            <h2 class="font-playfair text-5xl text-center">
+                                Hate
+                            </h2>
+                            <div ref="redline" class="fixed top-0 h-screen w-[3px] bg-secondary opacity-80 z-10 animate-pulse"></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex items-center justify-start flex-col">
-                    <h2 class="font-nunito text-3xl">Does Opposite Attract,</h2>
-                    <h2 class="font-nunito text-3xl">Or Are You Going to Get Whacked?</h2>
+                <div class="flex items-center justify-start flex-col z-20">
+                    <h2 class="font-nunito text-3xl text-center">Does Opposite Attract,</h2>
+                    <h2 class="font-nunito text-3xl text-center">Or Will You be Attacked?</h2>
                 </div>
+                <NuxtLink to="/match">
+                    <Button1 class="z-20 hover:cursor-pointer"><p class="text-xl font-nunito">Match Me</p></Button1>
+                </NuxtLink>
             </div>
         </div>
         <div ref="cover" class="fixed top-0 left-0 bg-background2 w-full h-full">
@@ -39,13 +44,12 @@
 
 <script setup>
 import gsap from 'gsap';
-import * as PIXI from "pixi.js"
 
 const horizontal = ref(null)
 const vertical = ref(null)
 const bowtie = ref(null)
 const cover = ref(null)
-const canvas = ref(null)
+const redline = ref(null)
 
 onMounted(async()=>{
     gsap.set(horizontal.value, {
@@ -59,6 +63,10 @@ onMounted(async()=>{
     gsap.set(bowtie.value, {
         translateX: `${0.5 * (window.innerWidth - bowtie.value.offsetWidth)}px`,
         translateY: `${0.5 * (window.innerHeight - bowtie.value.offsetHeight)}px`
+    })
+
+    gsap.set(redline.value, {
+        y: -window.innerHeight
     }) 
 
     const timeline = gsap.timeline()
@@ -94,6 +102,17 @@ onMounted(async()=>{
         alpha: 0,
         display: "none"
     })
+
+    timeline.to(redline.value, {
+        delay: 0.5,
+        ease: "expoScale(0.5,7,none)",
+        y: 0
+    })
+
+    // timeline.to(redline.value, {
+    //     ease: "expoScale(0.5,7,none)",
+    //     rotate: 10
+    // })
 
 })
 </script>
