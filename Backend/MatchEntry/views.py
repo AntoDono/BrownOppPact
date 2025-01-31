@@ -29,7 +29,8 @@ def createEntry(request):
             
             embedding = [0] * len(response.keys())
             for id in response.keys():
-                embedding[id] = response[id].value
+                id = int(id)
+                embedding[id] = response[str(id)]
                 
             summary = ""
             

@@ -4,9 +4,9 @@ import random
 def getMBTI(responses: dict):
     
     def getLetter(value, a, b):
-        if value == 5:
+        if value == 3:
             return a
-        elif value == -5:
+        elif value == -3:
             return b
         else:
             return " "
@@ -14,7 +14,7 @@ def getMBTI(responses: dict):
     mbti = [" ", " ", " ", " "]
     
     for id in responses.keys():
-        value = responses[id]
+        value = responses[id]["value"]
         id = int(id)
         
         if id == 0:
@@ -25,7 +25,8 @@ def getMBTI(responses: dict):
             mbti[0] = getLetter(value, "E", "I")
         elif id == 3:
             mbti[2] = getLetter(value, "T", "F")
-            
+    
+    print(mbti)
     return ''.join(mbti)
 
 def MBTIQuestions(): # THEIR ID WILL ALWAYS BE 0, 1, 2, 3
@@ -36,9 +37,9 @@ def MBTIQuestions(): # THEIR ID WILL ALWAYS BE 0, 1, 2, 3
             "id": 0,
             "choices": [
                 # P: Embraces new experiences
-                {"text": "Agree", "value": -5},
+                {"text": "Agree", "value": -3},
                 # J: Sticks to known comfort
-                {"text": "Disagree", "value": 5}
+                {"text": "Disagree", "value": 3}
             ]
         },
         {
@@ -46,8 +47,8 @@ def MBTIQuestions(): # THEIR ID WILL ALWAYS BE 0, 1, 2, 3
             "type": "choice",
             "id": 1,
             "choices": [
-                {"text": "Agree", "value": -5},      # N: Big picture focused
-                {"text": "Disagree", "value": 5}     # S: Detail-oriented
+                {"text": "Agree", "value": -3},      # N: Big picture focused
+                {"text": "Disagree", "value": 3}     # S: Detail-oriented
             ]
         },
         {
@@ -55,8 +56,8 @@ def MBTIQuestions(): # THEIR ID WILL ALWAYS BE 0, 1, 2, 3
             "type": "choice",
             "id": 2,
             "choices": [
-                {"text": "Agree", "value": -5},      # I: Energy from depth
-                {"text": "Disagree", "value": 5}     # E: Group preference
+                {"text": "Agree", "value": -3},      # I: Energy from depth
+                {"text": "Disagree", "value": 3}     # E: Group preference
             ]
         },
         {
@@ -64,9 +65,9 @@ def MBTIQuestions(): # THEIR ID WILL ALWAYS BE 0, 1, 2, 3
             "type": "choice",
             "id": 3,
             "choices": [
-                {"text": "Agree", "value": -5},      # F: Value-based choices
+                {"text": "Agree", "value": -3},      # F: Value-based choices
                 # T: Objective/financial criteria
-                {"text": "Disagree", "value": 5}
+                {"text": "Disagree", "value": 3}
             ]
         }
     ]
@@ -88,8 +89,8 @@ def viewpointQuestions():
             "question": "People are inherently good",
             "type": "slider",
             "id": 5,
-            "min": {"text": "Strongly Agree", "value": -5},
-            "max": {"text": "Strongly Disagree", "value": 5}
+            "min": {"text": "Strongly Agree", "value": -3},
+            "max": {"text": "Strongly Disagree", "value": 3}
         },
         {
             "question": "What's your view on personal responsibility?",
@@ -117,8 +118,8 @@ def viewpointQuestions():
             "question": "Happiness is a choice we make.",
             "type": "slider",
             "id": 8,
-            "min": {"text": "Strongly Agree", "value": -5},
-            "max": {"text": "Strongly Disagree", "value": 5}
+            "min": {"text": "Strongly Agree", "value": -3},
+            "max": {"text": "Strongly Disagree", "value": 3}
         }
     ]
 
@@ -128,22 +129,22 @@ def controversialQuestion():
             "question": "I think abortion should be legal.",
             "type": "slider",
             "id": 9,
-            "min": {"text": "Strongly Agree", "value": -5},
-            "max": {"text": "Strongly Disagree", "value": 5}
+            "min": {"text": "Strongly Agree", "value": -3},
+            "max": {"text": "Strongly Disagree", "value": 3}
         },
         {
             "question": "Having equality policies create new inequalities.",
             "type": "slider",
             "id": 10,
-            "min": {"text": "Strongly Agree", "value": -5},
-            "max": {"text": "Strongly Disagree", "value": 5}
+            "min": {"text": "Strongly Agree", "value": -3},
+            "max": {"text": "Strongly Disagree", "value": 3}
         },
         {
             "question": "The moon landing is a hoax.",
             "type": "slider",
             "id": 11,
-            "min": {"text": "Strongly Agree", "value": -5},
-            "max": {"text": "Strongly Disagree", "value": 5}
+            "min": {"text": "Strongly Agree", "value": -3},
+            "max": {"text": "Strongly Disagree", "value": 3}
         }
     ]
 
@@ -153,22 +154,22 @@ def additionalQuestions():
             "question": "If a hostile homeless guy with a knife confronted me, I will try to resolve it without physical violence.",
             "type": "slider",
             "id": 12,
-            "min": {"text": "Strongly Agree", "value": -5},
-            "max": {"text": "Nah I'll cook them 🤛", "value": 5}
+            "min": {"text": "Strongly Agree", "value": -3},
+            "max": {"text": "Nah I'll cook them 🤛", "value": 3}
         },
         {
             "question": "If my concentration didn't make as much money, I would've done something else I loved.",
             "type": "slider",
             "id": 13,
-            "min": {"text": "Strongly Agree", "value": -5},
-            "max": {"text": "Strongly Disagree", "value": 5}
+            "min": {"text": "Strongly Agree", "value": -3},
+            "max": {"text": "Strongly Disagree", "value": 3}
         },
         {
             "question": "I love to gossip about other people.",
             "type": "slider",
             "id": 14,
-            "min": {"text": "Strongly Agree", "value": -5},
-            "max": {"text": "Strongly Disagree", "value": 5}
+            "min": {"text": "Strongly Agree", "value": -3},
+            "max": {"text": "Strongly Disagree", "value": 3}
         },
         {
             "question": "The world is ending tomorrow, what are you going to do with your remaining time.",
@@ -183,17 +184,17 @@ def additionalQuestions():
         },
         {
             "question": "Are you freaky?",
-            "type": "choice",
+            "type": "slider",
             "id": 16,
-            "min": {"text": "Very 😝", "value": -5},
-            "max": {"text": "No I am normal", "value": 5}
+            "min": {"text": "Very 😝", "value": -3},
+            "max": {"text": "No I am normal", "value": 3}
         },
         {
-            "question": "I believe I can win in physical fights even against stronger opponents, just because they are facing you?",
-            "type": "choice",
+            "question": "I believe I can win in physical fights even against stronger opponents, just because they are facing me.",
+            "type": "slider",
             "id": 17,
-            "min": {"text": "OFCC", "value": -5},
-            "max": {"text": "Nah I'd get cooked 😭", "value": 5}
+            "min": {"text": "OFCC", "value": -3},
+            "max": {"text": "Nah I'd get cooked 😭", "value": 3}
         },
         {
             "question": "Do you date to marry?",
@@ -207,10 +208,10 @@ def additionalQuestions():
         },
         {
             "question": "I have a lot of rizz.",
-            "type": "choice",
+            "type": "slider",
             "id": 19,
-            "min": {"text": "I rizz them all up", "value": -5},
-            "max": {"text": "I'm cooked 💀", "value": 5}
+            "min": {"text": "I rizz them all up", "value": -3},
+            "max": {"text": "I'm cooked 💀", "value": 3}
         }
     ]
 
