@@ -69,11 +69,15 @@
             </div>
         </div>
         <div v-for="(q, index) in questions"
-            class="h-screen w-screen min-h-screen text-white bg-background1 grid grid-rows-[40%_50_10%] snap-center snap-always">
+            class="h-screen w-screen min-h-screen text-white bg-background1 grid grid-rows-[20%_30_50%] snap-center snap-always">
             <div class="w-full h-full flex flex-col items-center justify-center p-8">
                 <h2 class="text-4xl font-playfair text-center">{{ q["question"] }}</h2>
             </div>
-            <div class="w-full h-full flex justify-center items-center p-4" v-if="q['type'] == 'slider'">
+            <div class="w-full h-full flex justify-center items-center">
+                <img class="w-[20vw] h-[20vw] min-w-[100px] min-h-[100px] rounded-xl" 
+                :src="`${available_images[index > available_images.length ? index - available_images.length - 1 : index]}`"/>
+            </div>
+            <div class="w-full h-full flex justify-center items-start p-4" v-if="q['type'] == 'slider'">
                 <div class="w-fit h-fit flex flex-col gap-y-4">
                     <div class="w-full flex flex-row justify-between font-nunito text-xl">
                         <p>{{ q["min"]["text"] }}</p>
@@ -81,11 +85,11 @@
                     </div>
                     <div :id="`qc${q['id']}`" class="w-fit flex flex-row gap-x-2">
                         <div v-for="(i, index) in q['max']['value'] - q['min']['value'] + 1"
-                            :id="`qc-child-${q['id']}-${index}`" class="min-h-[40px] min-w-[40px] h-[4vw] w-[4vw] border-3
+                            :id="`qc-child-${q['id']}-${index}`" class="min-h-[40px] min-w-[40px] h-[5vw] w-[5vw] border-3
                             border-gray-300 rounded-lg flex items-center justify-center hover:cursor-pointer hover:scale-[105%] transition-all
                             hover:border-gray-50 duration-300"
                             @click="() => respondQuestion(q['question'], q['id'], q['min']['value'] + (i - 1), i, `qc-child-${q['id']}-${index}`)">
-                            <p class="font-nunito text-[3vmin]">{{ i }}</p>
+                            <p class="font-nunito text-lg">{{ i }}</p>
                         </div>
                     </div>
                 </div>
@@ -110,6 +114,13 @@
                 </div>
             </div>
         </div>
+        <div ref="loading" class="absolute top-0 left-0 w-full h-full flex justify-center items-center flex-col gap-y-10 bg-background1 hidden">
+            <div class="relative flex justify-center items-center">
+                <div class="absolute animate-spin rounded-full h-[15vw] w-[15vw] min-w-[150px] min-h-[150px] border-t-4 border-b-4 border-purple-500"></div>
+                <img src="~assets/images/catloading.jpg"  class="rounded-full h-[14vw] w-[14vw] min-w-[140px] min-h-[140px]">
+            </div>
+            <h2 class="text-white text-xl font-nunito">Analyzing your response, this might take a few seconds.</h2>
+        </div>
     </div>
 </template>
 <script setup>
@@ -123,6 +134,16 @@ const lname = ref(null)
 const classof = ref(null)
 const gender = ref(null)
 const email = ref(null)
+const config = useRuntimeConfig()
+const loading = ref(null)
+const available_images = ref(['/images/cat-what.png', '/images/gojo.gif', '/images/nihao.png', 
+                                '/images/rat.png', '/images/shooting.jpg', '/images/catthumbs.jpg',
+                                '/images/thinking.png', '/images/huh.jpg', '/images/flatface.jpg',
+                                '/images/raiseeyebrow.jpg', '/images/twofinger.jpg', '/images/cool.jpg'])
+
+const getRandomInt = (max) => {
+  return Math.floor(Math.random() * max);
+}
 
 const submitBasicInformation = () => {
     basicInfoValid.value =
@@ -152,7 +173,7 @@ const validateEmail = () => {
 }
 
 onMounted(async () => {
-    let qs = await $fetch("http://localhost:8000/entry/questions")
+    let qs = await $fetch(`${config.public.api}/entry/questions`)
     questions.value = qs.questions
     numOfQuestions.value = Object.keys(questions.value).length
 })
@@ -180,7 +201,8 @@ const respondQuestion = (question, id, value, user_response, html_choice_id) => 
 }
 
 const submit = async() => {
-    let res = await $fetch("http://localhost:8000/entry/create", {
+    loading.value.classList.remove("hidden")
+    let res = await $fetch(`${config.public.api}/entry/create`, {
         method: "POST",
         body: {
             firstname: fname.value,

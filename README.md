@@ -19,8 +19,19 @@ pip install poetry
 poetry install
 ```
 
+Then, create a .env file with the following parameters:
+```
+LLM_ENDPOINT="...."
+```
+**Note**: The llm endpoint might take different parameters, adjust in the code as you see fit.
+
 ## Setup Frontend
 ```bash
 cd frontend
 npm i
+```
+
+Then, create a .env file with the following parameters:
+```
+BACKEND_URL="...."
 ```

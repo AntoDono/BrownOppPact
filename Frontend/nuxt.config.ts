@@ -8,4 +8,9 @@ export default defineNuxtConfig({
   vite: {    
     plugins: [ tailwindcss() ]
   },
+  runtimeConfig: {
+    public: {
+      api: process.env.BACKEND_URL
+    }
+  }
 })

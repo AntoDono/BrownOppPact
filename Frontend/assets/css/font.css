@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Nunito'; /*a name to be used later*/
-    src: url('../fonts/NunitoSans-VariableFont_YTLC\,opsz\,wdth\,wght.ttf'); /*URL to font*/
+    src: url('../fonts/NunitoVariable.ttf') /*URL to font*/
 }
 
 @font-face {
