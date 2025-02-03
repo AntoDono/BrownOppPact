@@ -12,10 +12,11 @@
                         <label class="font-playfair text-2xl">Estimated MBTI:</label>
                         <h2 class="font-playfair text-6xl ml-7 p-2 text-secondary">{{ userData["mbti"] }}</h2>
                     </div>
-                    <div>
+                    <div class="flex justify-center items-center flex-col">
                         <label class="font-playfair text-2xl">Uniqueness Score:</label>
-                        <h2 class="font-playfair text-6xl ml-7 p-2 text-secondary">{{ userData["score"] }}</h2>
-                        <p class="font-nunito text-sm ml-7 p-2 text-white">{{ scoreComment(userData["score"]) }}</p>
+                        <h2 class="font-playfair text-6xl pt-2 text-secondary">{{ userData["score"] }}</h2>
+                        <h2 class="font-playfair text-2xl ml-14 text-white">/10000</h2>
+                        <p class="font-nunito text-sm p-2 text-white">{{ scoreComment(userData["score"]) }}</p>
                     </div>
                 </div>
                 <div class="w-full flex justify-center flex-col gap-y-10">
@@ -49,8 +50,8 @@ const userData = ref(null)
 const config = useRuntimeConfig()
 
 const scoreComment = (score)=>{
-    if (score < 3000) return "Wow, you are kind of an NPC."
-    else if (score >= 3000 && score < 6000) return "Okay icic, you kinda unique."
+    if (score < 3333) return "Wow, you are kind of an NPC."
+    else if (score >= 3333 && score < 6666) return "Okay icic, you kinda unique."
     else return "Wow, you are quite a character."
 }
 

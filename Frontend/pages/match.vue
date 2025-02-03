@@ -62,10 +62,34 @@
                     ]" placeholder="...@brown.edu" @input="validateEmail" required />
                     <p v-if="!isValidEmail" class="text-red-500">Invalid Brown University email</p>
                 </div>
-                <p v-if="!basicInfoValid" class="text-red-500 mb-4">Please fill out all information correctly.</p>
-                <Button1 class="hover:cursor-pointer" @click="submitBasicInformation">
-                    <p>Confirm Information</p>
-                </Button1>
+                <div>
+                    <div>
+                        <div class="flex items-center mb-4">
+                            <input checked id="default-radio-1" type="radio" value="limited" name="default-radio" v-model="shareInformation"
+                                class="w-4 h-4 appearance-none border border-gray-300 rounded-sm focus:ring-2 focus:ring-blue-500 
+            checked:border-blue-600 relative checked:after:content-[''] checked:after:absolute checked:after:top-1/2 checked:after:left-1/2 
+            checked:after:w-2 checked:after:h-2 checked:after:bg-blue-600 checked:after:transform checked:after:-translate-x-1/2 checked:after:-translate-y-1/2">
+                            <label for="default-radio-1"
+                                class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Share only my initials
+                                with my opp.</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input id="default-radio-2" type="radio" value="all" name="default-radio" v-model="shareInformation"
+                                class="w-4 h-4 appearance-none border border-gray-300 rounded-sm focus:ring-2 focus:ring-blue-500 
+            checked:border-blue-600 relative checked:after:content-[''] checked:after:absolute checked:after:top-1/2 checked:after:left-1/2 
+            checked:after:w-2 checked:after:h-2 checked:after:bg-blue-600 checked:after:transform checked:after:-translate-x-1/2 checked:after:-translate-y-1/2">
+                            <label for="default-radio-2"
+                                class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Share my full name and
+                                email with my opp.</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full flex flex-col items-center justify-center mt-4 gap-y-2">
+                    <p v-if="!basicInfoValid" class="text-red-500">Please fill out all information correctly.</p>
+                    <Button1 class="hover:cursor-pointer" @click="submitBasicInformation">
+                        <p>Confirm Information</p>
+                    </Button1>
+                </div>
             </div>
         </div>
         <div v-for="(q, index) in questions"
@@ -74,8 +98,8 @@
                 <h2 class="text-4xl font-playfair text-center">{{ q["question"] }}</h2>
             </div>
             <div class="w-full h-full flex justify-center items-center">
-                <img class="w-[20vw] h-[20vw] min-w-[100px] min-h-[100px] rounded-xl" 
-                :src="`${available_images[index >= available_images.length ? index - available_images.length : index]}`"/>
+                <img class="w-[20vw] h-[20vw] min-w-[100px] min-h-[100px] rounded-xl"
+                    :src="`${available_images[index >= available_images.length ? index - available_images.length : index]}`" />
             </div>
             <div class="w-full h-full flex justify-center items-start p-4" v-if="q['type'] == 'slider'">
                 <div class="w-fit h-fit flex flex-col gap-y-4">
@@ -114,10 +138,14 @@
                 </div>
             </div>
         </div>
-        <div ref="loading" class="absolute top-0 left-0 w-full h-full flex justify-center items-center flex-col gap-y-10 bg-background1 hidden">
+        <div ref="loading"
+            class="absolute top-0 left-0 w-full h-full flex justify-center items-center flex-col gap-y-10 bg-background1 hidden">
             <div class="relative flex justify-center items-center">
-                <div class="absolute animate-spin rounded-full h-[15vw] w-[15vw] min-w-[150px] min-h-[150px] border-t-4 border-b-4 border-purple-500"></div>
-                <img src="~assets/images/catloading.jpg"  class="rounded-full h-[14vw] w-[14vw] min-w-[140px] min-h-[140px]">
+                <div
+                    class="absolute animate-spin rounded-full h-[15vw] w-[15vw] min-w-[150px] min-h-[150px] border-t-4 border-b-4 border-purple-500">
+                </div>
+                <img src="~assets/images/catloading.jpg"
+                    class="rounded-full h-[14vw] w-[14vw] min-w-[140px] min-h-[140px]">
             </div>
             <h2 class="text-white text-xl font-nunito">Analyzing your response, this might take a few seconds.</h2>
         </div>
@@ -134,12 +162,13 @@ const lname = ref(null)
 const classof = ref(null)
 const gender = ref(null)
 const email = ref(null)
+const shareInformation = ref("limited")
 const config = useRuntimeConfig()
 const loading = ref(null)
-const available_images = ref(['/images/cat-what.png', '/images/gojo.gif', '/images/nihao.png', 
-                                '/images/rat.png', '/images/shooting.jpg', '/images/catthumbs.jpg',
-                                '/images/thinking.png', '/images/huh.jpg', '/images/flatface.jpg',
-                                '/images/raiseeyebrow.jpg', '/images/twofinger.jpg', '/images/cool.jpg'])
+const available_images = ref(['/images/cat-what.png', '/images/gojo.gif', '/images/nihao.png',
+    '/images/rat.png', '/images/shooting.jpg', '/images/catthumbs.jpg',
+    '/images/thinking.png', '/images/huh.jpg', '/images/flatface.jpg',
+    '/images/raiseeyebrow.jpg', '/images/twofinger.jpg', '/images/cool.jpg'])
 
 const router = useRouter()
 
@@ -149,7 +178,8 @@ const submitBasicInformation = () => {
         lname.value != null &&
         classof.value != null &&
         email.value != null &&
-        isValidEmail.value == true
+        isValidEmail.value == true &&
+        shareInformation.value != null
 
     if (basicInfoValid.value) { // scroll to questions
         const currentSection = document.querySelector('.snap-center')
@@ -184,7 +214,7 @@ const respondQuestion = (question, id, value, user_response, html_choice_id) => 
         child.classList.remove('selected')
     }
     document.getElementById(html_choice_id).classList.add("selected")
-    
+
     setTimeout(() => {
         // Get the current question's container
         const currentQuestion = qc.closest('.snap-center')
@@ -198,7 +228,7 @@ const respondQuestion = (question, id, value, user_response, html_choice_id) => 
     }, 100) // 300ms delay to show the selection before scrolling
 }
 
-const submit = async() => {
+const submit = async () => {
     loading.value.classList.remove("hidden")
     let uuid = await $fetch(`${config.public.api}/entry/create`, {
         method: "POST",
@@ -207,6 +237,7 @@ const submit = async() => {
             lastname: lname.value,
             email: email.value,
             gender: gender.value,
+            permission_to_share: shareInformation.value == "all",
             response: response.value
         }
     })

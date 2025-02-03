@@ -1,6 +1,7 @@
 from django.db import models
 import random
 from uuid import uuid4
+import numpy as np
 
 def getMBTI(responses: dict):
     
@@ -209,6 +210,20 @@ def getQuestions():
     random.shuffle(questions)
     return questions
 
+CACHED_MAX_SCORE = None
+def maxScore():
+    global CACHED_MAX_SCORE
+    if CACHED_MAX_SCORE == None:
+        scores = []
+        questions = getQuestions()
+        for q in questions:
+            if q["type"] == "slider":
+                scores.append(q["max"]["value"])
+            elif q["type"] == "choice":
+                scores.append(max([c["value"] for c in q["choices"]]))
+        CACHED_MAX_SCORE = np.linalg.norm(scores)
+    return CACHED_MAX_SCORE
+    
 # Create your models here.
 class MatchEntry(models.Model):
     GENDER_CHOICES = [
@@ -232,6 +247,7 @@ class MatchEntry(models.Model):
     embedding = models.JSONField(default=list)
     score = models.IntegerField()
     summary = models.JSONField(default=dict)
+    permission_to_share = models.BooleanField(default=False)
     uuid = models.CharField(max_length=128, default=uuid4)
 
     def __str__(self):

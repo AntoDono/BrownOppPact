@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponseNotFound, JsonResponse, HttpResponseBadRequest, HttpResponse, HttpResponseServerError
-from MatchEntry.models import getQuestions, getMBTI, MatchEntry
+from MatchEntry.models import getQuestions, maxScore, getMBTI, MatchEntry
 import json
 from django.views.decorators.csrf import csrf_exempt
 import requests
@@ -46,14 +46,17 @@ def createEntry(request):
             email = data["email"]
             gender = data["gender"]
             response = data["response"]
+            perm_to_share = data["permission_to_share"]
             mbti = getMBTI(response)
             
             embedding = [0] * len(response.keys())
+            uniqueness = [0] * len(response.keys())
             for id in response.keys():
                 id = int(id)
                 embedding[id] = response[str(id)]["value"]
+                uniqueness[id] = abs(response[str(id)]["value"])
             
-            score = np.linalg.norm(embedding) / (len(response.keys()) * 10)
+            score = np.linalg.norm(uniqueness) / maxScore()
             score *= 10000 # scale by 10,000 cause thats the max score
                 
             res = None
@@ -86,7 +89,7 @@ def createEntry(request):
                     retries += 1
                     print(f"Error parsing json, retrying {retries}/5")
 
-            entry = MatchEntry(firstname=fname, lastname=lname, email=email, gender=gender, mbti=mbti, embedding=embedding, summary=res, score=score)
+            entry = MatchEntry(firstname=fname, lastname=lname, email=email, gender=gender, mbti=mbti, embedding=embedding, summary=res, score=score, permission_to_share=perm_to_share)
             entry.save()
             return HttpResponse(entry.uuid)
         else:
