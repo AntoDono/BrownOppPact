@@ -34,4 +34,5 @@ npm i
 Then, create a .env file with the following parameters:
 ```
 BACKEND_URL="...."
+APIKEY="..."
 ```

@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('entry/questions', meViews.allQuestions),
     path('entry/create', meViews.createEntry),
+    path('entry/get', meViews.retrieveUser),
 ]

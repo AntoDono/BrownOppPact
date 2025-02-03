@@ -211,16 +211,35 @@ def getQuestions():
 
 # Create your models here.
 class MatchEntry(models.Model):
+    GENDER_CHOICES = [
+        ('male', 'Male'),
+        ('female', 'Female'),
+        ('helicopter', 'AttackHelicopter'),
+        ('non-binary', 'Non-binary'),
+        ('transgender', 'Transgender'),
+        ('genderqueer', 'Genderqueer'),
+        ('genderfluid', 'Genderfluid'),
+        ('agender', 'Agender'),
+        ('other', 'Other'),
+        ('prefer-not', 'Prefer not to say'),
+    ]
+    
     firstname = models.CharField(max_length=128)
     lastname = models.CharField(max_length=128)
     email = models.EmailField()
     mbti = models.CharField(max_length=4)
+    gender = models.CharField(max_length=128, choices=GENDER_CHOICES)
     embedding = models.JSONField(default=list)
+    score = models.IntegerField()
     summary = models.JSONField(default=dict)
     uuid = models.CharField(max_length=128, default=uuid4)
 
     def __str__(self):
         return self.email
+    
+    def serialize(self):
+        return {"firstname": self.firstname, "lastname": self.lastname, "mbti": self.mbti,
+                "summary": self.summary, "score": self.score}
     
     class Meta:
         verbose_name_plural = "Match Entries"

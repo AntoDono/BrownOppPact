@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 import requests
 from dotenv import load_dotenv
 import os
+import numpy as np
 
 load_dotenv()
 LLM_ENDPOINT = os.getenv("LLM_ENDPOINT")
@@ -22,7 +23,19 @@ def allQuestions(request):
     except Exception as e:
         print(e)
         return HttpResponseServerError()
-
+    
+@csrf_exempt
+def retrieveUser(request):
+    try:
+        if request.method == "GET":
+            uuid = request.GET.get("uuid")
+            return JsonResponse(MatchEntry.objects.get(uuid=uuid).serialize())
+        else:
+            return HttpResponseNotFound()
+    except Exception as e:
+        print(e)
+        return HttpResponseServerError()
+    
 @csrf_exempt
 def createEntry(request):
     try:
@@ -31,6 +44,7 @@ def createEntry(request):
             fname = data["firstname"]
             lname = data["lastname"]
             email = data["email"]
+            gender = data["gender"]
             response = data["response"]
             mbti = getMBTI(response)
             
@@ -38,6 +52,9 @@ def createEntry(request):
             for id in response.keys():
                 id = int(id)
                 embedding[id] = response[str(id)]["value"]
+            
+            score = np.linalg.norm(embedding) / (len(response.keys()) * 10)
+            score *= 10000 # scale by 10,000 cause thats the max score
                 
             res = None
             retries = 0
@@ -59,7 +76,7 @@ def createEntry(request):
                         Be funny and be witty, include some emojis. 
                         Use second person, as you are addressing to them directly.
                         Return your response in json format, with keys "summary", "insight", and "opp".
-                        Output as raw json, that means no need for code blocks (```).
+                        Output as raw json, This means NO CODE BLOCKS (ex: ```json).
                         """
                     }) 
                 try:
@@ -69,9 +86,9 @@ def createEntry(request):
                     retries += 1
                     print(f"Error parsing json, retrying {retries}/5")
 
-            entry = MatchEntry(firstname=fname, lastname=lname, email=email, mbti=mbti, embedding=embedding, summary=res)
+            entry = MatchEntry(firstname=fname, lastname=lname, email=email, gender=gender, mbti=mbti, embedding=embedding, summary=res, score=score)
             entry.save()
-            return HttpResponse()
+            return HttpResponse(entry.uuid)
         else:
             return HttpResponseNotFound()
     except KeyError as e:

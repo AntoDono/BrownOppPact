@@ -75,7 +75,7 @@
             </div>
             <div class="w-full h-full flex justify-center items-center">
                 <img class="w-[20vw] h-[20vw] min-w-[100px] min-h-[100px] rounded-xl" 
-                :src="`${available_images[index > available_images.length ? index - available_images.length - 1 : index]}`"/>
+                :src="`${available_images[index >= available_images.length ? index - available_images.length : index]}`"/>
             </div>
             <div class="w-full h-full flex justify-center items-start p-4" v-if="q['type'] == 'slider'">
                 <div class="w-fit h-fit flex flex-col gap-y-4">
@@ -141,9 +141,7 @@ const available_images = ref(['/images/cat-what.png', '/images/gojo.gif', '/imag
                                 '/images/thinking.png', '/images/huh.jpg', '/images/flatface.jpg',
                                 '/images/raiseeyebrow.jpg', '/images/twofinger.jpg', '/images/cool.jpg'])
 
-const getRandomInt = (max) => {
-  return Math.floor(Math.random() * max);
-}
+const router = useRouter()
 
 const submitBasicInformation = () => {
     basicInfoValid.value =
@@ -202,15 +200,17 @@ const respondQuestion = (question, id, value, user_response, html_choice_id) => 
 
 const submit = async() => {
     loading.value.classList.remove("hidden")
-    let res = await $fetch(`${config.public.api}/entry/create`, {
+    let uuid = await $fetch(`${config.public.api}/entry/create`, {
         method: "POST",
         body: {
             firstname: fname.value,
             lastname: lname.value,
             email: email.value,
+            gender: gender.value,
             response: response.value
         }
     })
+    router.push(`/result?uuid=${uuid}`)
 }
 </script>
 

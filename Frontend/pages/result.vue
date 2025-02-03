@@ -1,0 +1,61 @@
+<template>
+    <div class="w-screen min-h-screen h-fit pb-40 bg-background1 flex items-center flex-col gap-y-10 overflow-y-hidden">
+        <h1 class="text-white text-center text-5xl font-playfair pt-20">Your Result</h1>
+        <div v-if="userData" class="w-[50vw] min-w-[500px] h-fit flex justify-center items-center flex-col gap-y-20">
+            <div class="text-white text-2xl font-nunito flex flex-col gap-y-4">
+                <p class="text-center">Hello {{ userData["firstname"] }} {{ userData["lastname"] }}, welcome to Opp Match 😈‼️</p>
+                <p class="text-center">Based on our analysis, we conclude:</p>
+            </div>
+            <div class="w-full flex flex-col justify-around gap-y-10 text-white font-nunito text-xl">
+                <div class="w-full flex justify-around flex-row">
+                    <div>
+                        <label class="font-playfair text-2xl">Estimated MBTI:</label>
+                        <h2 class="font-playfair text-6xl ml-7 p-2 text-secondary">{{ userData["mbti"] }}</h2>
+                    </div>
+                    <div>
+                        <label class="font-playfair text-2xl">Uniqueness Score:</label>
+                        <h2 class="font-playfair text-6xl ml-7 p-2 text-secondary">{{ userData["score"] }}</h2>
+                        <p class="font-nunito text-sm ml-7 p-2 text-white">{{ scoreComment(userData["score"]) }}</p>
+                    </div>
+                </div>
+                <div class="w-full flex justify-center flex-col gap-y-10">
+                    <div class="w-full flex flex-col gap-y-5">
+                        <h2 class="font-playfair text-3xl text-center">Summary</h2>
+                        <p class="font-playfair text-md text-justify">{{ userData["summary"]["summary"] }}</p>
+                    </div>
+                    <div class="w-full flex flex-col gap-y-5">
+                        <h2 class="font-playfair text-3xl text-center">Insights</h2>
+                        <p class="font-playfair text-md text-justify">{{ userData["summary"]["insight"] }}</p>
+                    </div>
+                    <div class="w-full flex flex-col gap-y-5">
+                        <h2 class="font-playfair text-3xl text-center">Your Opp</h2>
+                        <p class="font-playfair text-md text-justify">{{ userData["summary"]["opp"] }}</p>
+                    </div>
+                    <div class="w-full flex gap-y-4 flex-col mt-10">
+                        <h2 class="font-playfair text-2xl text-center">Your Opp? It will be released soon 😉, just be patient.</h2>
+                        <h2 class="font-playfair text-2xl text-center">After all, we all need to run on a little hate...</h2>
+                        <h2 class="font-playfair text-2xl text-center">or cross the thin line and ask them out for valentines LMFAOO.</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <p class="text-white">{{ userData }}</p> -->
+    </div>
+</template>
+
+<script setup>
+const route = useRoute()
+const userData = ref(null)
+const config = useRuntimeConfig()
+
+const scoreComment = (score)=>{
+    if (score < 3000) return "Wow, you are kind of an NPC."
+    else if (score >= 3000 && score < 6000) return "Okay icic, you kinda unique."
+    else return "Wow, you are quite a character."
+}
+
+onMounted(async()=>{
+    let data = await fetch(`${config.public.api}/entry/get?uuid=${route.query.uuid}`)
+    userData.value = await data.json()
+})
+</script>
