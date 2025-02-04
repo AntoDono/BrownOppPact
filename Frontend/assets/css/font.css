@@ -7,3 +7,13 @@
     font-family: 'Playfair'; /*a name to be used later*/
     src: url('../fonts/PlayfairDisplay-VariableFont_wght.ttf'); /*URL to font*/
 }
+
+@font-face {
+    font-family: 'Lexend'; /*a name to be used later*/
+    src: url('../fonts/Lexend.ttf'); /*URL to font*/
+}
+
+@font-face {
+    font-family: 'Urbanist'; /*a name to be used later*/
+    src: url('../fonts/Urbanist.ttf'); /*URL to font*/
+}

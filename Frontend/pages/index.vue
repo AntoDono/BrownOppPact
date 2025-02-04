@@ -6,13 +6,13 @@
             </div>
             <div class="fixed w-full h-full flex flex-col justify-center items-center gap-y-10 text-white">
                 <div>
-                    <h1 class="relative font-playfair text-6xl text-center z-20">There is a Thin Line Between</h1>
+                    <h1 class="relative font-lexend text-6xl text-center z-20">There is a Thin Line Between</h1>
                     <div>
                         <div class="w-full flex flex-row gap-x-4 items-center justify-center">
-                            <h2 class="font-playfair text-5xl text-center">
+                            <h2 class="font-lexend text-5xl text-center">
                                 Love
                             </h2>
-                            <h2 class="font-playfair text-5xl text-center">
+                            <h2 class="font-lexend text-5xl text-center">
                                 Hate
                             </h2>
                             <div ref="redline" class="fixed top-0 h-screen w-[3px] bg-secondary opacity-80 z-10 animate-pulse"></div>
@@ -20,15 +20,15 @@
                     </div>
                 </div>
                 <div class="flex items-center justify-start flex-col z-20">
-                    <h2 class="font-nunito text-3xl text-center">Does Opposite Attract,</h2>
-                    <h2 class="font-nunito text-3xl text-center">Or Will You be Attacked?</h2>
+                    <h2 class="font-urbanist text-3xl text-center">Does Opposite Attract,</h2>
+                    <h2 class="font-urbanist text-3xl text-center">Or Will You be Attacked?</h2>
                 </div>
                 <NuxtLink to="/match">
-                    <Button1 class="z-20 hover:cursor-pointer"><p class="text-xl font-nunito">Match Me</p></Button1>
+                    <Button1 class="z-20 hover:cursor-pointer"><p class="text-xl font-urbanist">Match Me</p></Button1>
                 </NuxtLink>
             </div>
         </div>
-        <div ref="cover" class="fixed top-0 left-0 bg-background2 w-full h-full">
+        <div ref="cover" class="fixed top-0 left-0 bg-background2 w-full h-full z-10">
             <div ref="horizontal" class="fixed w-screen">
                 <div class="w-full h-8 bg-primary"></div>
                 <div class="w-full h-8 bg-secondary"></div>

@@ -5,10 +5,13 @@
     --color-secondary: oklch(38.87% 0.3034 0);
     --color-background1: oklch(12.31% 0 0);
     --color-background2: oklch(30.2% 0.0036 286.18);
+    --color-background3: oklch(44.96% 0.0074 286.18);
     --color-contrast1: oklch(97.02% 0 0);
     --color-contrast2: oklch(59.99% 0 0);
-    --font-nunito: Nunito;
+    --font-urbanist: Nunito;
+    --font-lexend: Lexend;
     --font-playfair: Playfair;
+    --font-urbanist: Urbanist;
 }
 
 /* width */

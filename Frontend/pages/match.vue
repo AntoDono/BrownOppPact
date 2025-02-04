@@ -1,7 +1,7 @@
 <template>
     <div class="h-screen w-screen bg-background1 overflow-y-auto overflow-x-hidden scroll-smooth snap-y snap-mandatory">
         <div
-            class="h-screen w-screen flex justify-center items-center min-h-screen text-white bg-background1 snap-center snap-always">
+            class="h-screen w-screen flex justify-center items-center min-h-screen pb-10 text-white bg-background1 snap-center snap-always">
             <div class="h-full w-full flex flex-col justify-center items-center">
                 <div class="mb-5 w-[10%] min-w-[300px]">
                     <label for="fname" class="block mb-2 text-sm font-medium text-white">First
@@ -37,7 +37,7 @@
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Gender</label>
                     <select v-model="gender"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option value="">Select gender</option>
+                        <option disabled>Select gender</option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                         <option value="helicopter">AttackHelicopter</option>
@@ -93,17 +93,17 @@
             </div>
         </div>
         <div v-for="(q, index) in questions"
-            class="h-screen w-screen min-h-screen text-white bg-background1 grid grid-rows-[20%_30_50%] snap-center snap-always">
-            <div class="w-full h-full flex flex-col items-center justify-center p-8">
-                <h2 class="text-4xl font-playfair text-center">{{ q["question"] }}</h2>
+            class="h-screen w-screen min-h-screen box-content text-white bg-background1 grid grid-rows-[20%_30_40%_10%] snap-center snap-always">
+            <div class="w-full h-full flex flex-col items-center justify-center p-8 z-10">
+                <h2 class="lg:text-4xl text-xl font-lexend text-center">{{ q["question"] }}</h2>
             </div>
-            <div class="w-full h-full flex justify-center items-center">
+            <div class="w-full h-full flex justify-center items-center z-10">
                 <img class="w-[20vw] h-[20vw] min-w-[100px] min-h-[100px] rounded-xl"
                     :src="`${available_images[index >= available_images.length ? index - available_images.length : index]}`" />
             </div>
-            <div class="w-full h-full flex justify-center items-start p-4" v-if="q['type'] == 'slider'">
+            <div class="w-full h-full flex justify-center items-start p-4 z-10" v-if="q['type'] == 'slider'">
                 <div class="w-fit h-fit flex flex-col gap-y-4">
-                    <div class="w-full flex flex-row justify-between font-nunito text-xl">
+                    <div class="w-full flex flex-row justify-between font-urbanist text-xl">
                         <p>{{ q["min"]["text"] }}</p>
                         <p>{{ q["max"]["text"] }}</p>
                     </div>
@@ -113,14 +113,14 @@
                             border-gray-300 rounded-lg flex items-center justify-center hover:cursor-pointer hover:scale-[105%] transition-all
                             hover:border-gray-50 duration-300"
                             @click="() => respondQuestion(q['question'], q['id'], q['min']['value'] + (i - 1), i, `qc-child-${q['id']}-${index}`)">
-                            <p class="font-nunito text-lg">{{ i }}</p>
+                            <p class="font-urbanist text-lg">{{ i }}</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div v-else-if="q['type'] == 'choice'" class="w-full h-full flex justify-center items-center p-4">
+            <div v-else-if="q['type'] == 'choice'" class="w-full h-full flex justify-center items-center p-4 z-10">
                 <div :id="`qc${q['id']}`" class="w-[60%] min-w-[300px] flex flex-col gap-y-4">
-                    <div v-for="(choice, index) in q['choices']" :id="`qc-child-${q['id']}-${index}`" class="w-full border-3 border-gray-300 p-4 rounded-xl
+                    <div v-for="(choice, index) in q['choices']" :id="`qc-child-${q['id']}-${index}`" class="w-full border-3 border-gray-300 lg:p-4 p-2 rounded-xl
                     hover:cursor-pointer hover:scale-[103%] transition-all hover:border-gray-50 duration-300"
                         @click="() => respondQuestion(q['question'], q['id'], choice['value'], choice['text'], `qc-child-${q['id']}-${index}`)">
                         <p>{{ choice["text"] }}</p>
@@ -137,9 +137,12 @@
                     </Button1>
                 </div>
             </div>
+            <div class="w-full h-full">
+                <!-- THIS IS RESERVED FOR SHOWING FOTTERR THROUGH-->
+            </div>
         </div>
         <div ref="loading"
-            class="absolute top-0 left-0 w-full h-full flex justify-center items-center flex-col gap-y-10 bg-background1 hidden">
+            class="z-30 absolute top-0 left-0 w-full h-full flex justify-center items-center flex-col gap-y-10 bg-background1 hidden">
             <div class="relative flex justify-center items-center">
                 <div
                     class="absolute animate-spin rounded-full h-[15vw] w-[15vw] min-w-[150px] min-h-[150px] border-t-4 border-b-4 border-purple-500">
@@ -147,7 +150,7 @@
                 <img src="~assets/images/catloading.jpg"
                     class="rounded-full h-[14vw] w-[14vw] min-w-[140px] min-h-[140px]">
             </div>
-            <h2 class="text-white text-xl font-nunito">Analyzing your response, this might take a few seconds.</h2>
+            <h2 class="text-white text-xl font-urbanist">Analyzing your response, this might take a few seconds.</h2>
         </div>
     </div>
 </template>

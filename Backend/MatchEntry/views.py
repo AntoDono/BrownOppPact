@@ -7,10 +7,48 @@ import requests
 from dotenv import load_dotenv
 import os
 import numpy as np
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import threading
 
 load_dotenv()
 LLM_ENDPOINT = os.getenv("LLM_ENDPOINT")
 APIKEY = os.getenv("APIKEY")
+
+SMTP_SERVER = "smtp.gmail.com"
+SMTP_PORT = 587  # Use 465 for SSL
+
+GMAIL_USER = os.getenv("EMAIL")
+GMAIL_PASSWORD = os.getenv("PASSWORD")
+
+FRONTEND_URL = os.getenv("FRONTEND_URL")
+
+BASE_DIR = os.getcwd()
+
+def send_email_async(entry):
+    try:
+        msg = MIMEMultipart()
+        msg["From"] = GMAIL_USER
+        msg["To"] = entry.email
+        msg["Subject"] = "OppMatch - Confirmation"
+        
+        with open(f"{BASE_DIR}/email_templates/confirmation.html", "r", encoding="utf-8") as file:
+            html_content = file.read()
+            
+        html_content = html_content.replace("{{NAME}}", entry.firstname)
+        html_content = html_content.replace("{{LINK}}", f"{FRONTEND_URL}/uuid?={entry.uuid}")
+        msg.attach(MIMEText(html_content, "html"))
+
+        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+        server.starttls()  # Upgrade to secure connection
+        server.login(GMAIL_USER, GMAIL_PASSWORD)
+        server.sendmail(GMAIL_USER, entry.email, msg.as_string())
+        server.quit()
+
+        print(f"Email sent successfully to {entry.email}!")
+    except Exception as e:
+        print(f"Error sending email: {e}")
 
 # Create your views here.
 @csrf_exempt
@@ -41,8 +79,8 @@ def createEntry(request):
     try:
         if request.method == "POST":
             data = json.loads(request.body)
-            fname = data["firstname"]
-            lname = data["lastname"]
+            fname = data["firstname"].lower().capitalize()
+            lname = data["lastname"].lower().capitalize()
             email = data["email"]
             gender = data["gender"]
             response = data["response"]
@@ -91,6 +129,10 @@ def createEntry(request):
 
             entry = MatchEntry(firstname=fname, lastname=lname, email=email, gender=gender, mbti=mbti, embedding=embedding, summary=res, score=score, permission_to_share=perm_to_share)
             entry.save()
+        
+            email_thread = threading.Thread(target=send_email_async, args=(entry,))
+            email_thread.start()
+
             return HttpResponse(entry.uuid)
         else:
             return HttpResponseNotFound()

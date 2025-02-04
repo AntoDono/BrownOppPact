@@ -22,6 +22,9 @@ poetry install
 Then, create a .env file with the following parameters:
 ```
 LLM_ENDPOINT="...."
+EMAIL = "your_email@gmail.com"
+PASSWORD = "your_app_password" <- gmail app password
+FRONTEND_URL = "..." <- the frontend url. For instance, http://localhost:3000. 
 ```
 **Note**: The llm endpoint might take different parameters, adjust in the code as you see fit.
 
