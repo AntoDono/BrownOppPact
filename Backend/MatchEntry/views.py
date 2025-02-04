@@ -37,7 +37,7 @@ def send_email_async(entry):
             html_content = file.read()
             
         html_content = html_content.replace("{{NAME}}", entry.firstname)
-        html_content = html_content.replace("{{LINK}}", f"{FRONTEND_URL}/uuid?={entry.uuid}")
+        html_content = html_content.replace("{{LINK}}", f"{FRONTEND_URL}/result?uuid={entry.uuid}")
         msg.attach(MIMEText(html_content, "html"))
 
         server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
