@@ -1,13 +1,13 @@
 <template>
     <div class="w-screen min-h-screen h-fit pb-40 bg-background1 flex items-center flex-col gap-y-10 overflow-y-hidden">
         <h1 class="text-white text-center text-5xl font-lexend pt-20">Your Result</h1>
-        <div v-if="userData" class="w-[50vw] min-w-[500px] h-fit flex justify-center items-center flex-col gap-y-20">
+        <div v-if="userData" class="w-[50vw] min-w-[300px] flex-wrap h-fit flex justify-center items-center flex-col gap-y-20">
             <div class="text-white text-2xl font-urbanist flex flex-col gap-y-4">
                 <p class="text-center">Hello {{ userData["firstname"] }} {{ userData["lastname"] }}, welcome to Opp Match 😈‼️</p>
                 <p class="text-center">Based on our analysis, we conclude:</p>
             </div>
             <div class="w-full flex flex-col justify-around gap-y-10 text-white font-urbanist text-xl">
-                <div class="w-full flex justify-around flex-row">
+                <div class="w-full flex justify-around flex-row flex-wrap">
                     <div>
                         <label class="font-lexend text-2xl">Estimated MBTI:</label>
                         <h2 class="font-lexend text-6xl ml-7 p-2 text-secondary">{{ userData["mbti"] }}</h2>

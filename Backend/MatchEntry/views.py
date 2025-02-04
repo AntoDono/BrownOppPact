@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponseNotFound, JsonResponse, HttpResponseBadRequest, HttpResponse, HttpResponseServerError
+from django.http import HttpResponseNotFound, JsonResponse, HttpResponseBadRequest, HttpResponse, HttpResponseServerError, HttpResponseForbidden
 from MatchEntry.models import getQuestions, maxScore, getMBTI, MatchEntry
 import json
 from django.views.decorators.csrf import csrf_exempt
@@ -87,6 +87,12 @@ def createEntry(request):
             perm_to_share = data["permission_to_share"]
             mbti = getMBTI(response)
             
+            try:
+                existin_entry = MatchEntry.objects.get(email=email)
+                return HttpResponseForbidden()
+            except MatchEntry.DoesNotExist:
+                pass
+            
             embedding = [0] * len(response.keys())
             uniqueness = [0] * len(response.keys())
             for id in response.keys():
@@ -109,9 +115,9 @@ def createEntry(request):
                         MBTI: {mbti}
                         {response}\nGiven the response above, complete the following:
                         
-                        - summary: Write a summary of their response to their questions (One paragraph)
-                        - insight: Talk about their personality from the data. (One paragraph)
-                        - opp: Write how someone that is their opp would be like. (No limit)
+                        - summary: Write a summary of their response to their questions. Plain text (One paragraph).
+                        - insight: Talk about their personality from the data. Plain text (One paragraph).
+                        - opp: Write how someone that is their opp would be like. Plain text (No limit).
                         *opp: Someone who is opposite from you, could be a hater. Do not include this definition in your response.
                         
                         Be funny and be witty, include some emojis. 

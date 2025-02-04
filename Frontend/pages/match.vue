@@ -128,7 +128,7 @@
                 </div>
             </div>
             <div v-if="index + 1 == numOfQuestions" class="w-screen h-fit flex justify-center">
-                <Button1 v-if="Object.keys(response).length == numOfQuestions" class="hover:cursor-pointer">
+                <Button1 v-if="Object.keys(response).length == numOfQuestions && basicInfoValid" class="hover:cursor-pointer">
                     <p class="text-xl p-2" @click="submit">Find Your Opp</p>
                 </Button1>
                 <div v-else class="opacity-70">
@@ -159,7 +159,7 @@ const questions = ref([])
 const response = ref({})
 const isValidEmail = ref(true)
 const numOfQuestions = ref(0)
-const basicInfoValid = ref(true)
+const basicInfoValid = ref(false)
 const fname = ref(null)
 const lname = ref(null)
 const classof = ref(null)
@@ -233,17 +233,26 @@ const respondQuestion = (question, id, value, user_response, html_choice_id) => 
 
 const submit = async () => {
     loading.value.classList.remove("hidden")
-    let uuid = await $fetch(`${config.public.api}/entry/create`, {
-        method: "POST",
-        body: {
-            firstname: fname.value,
-            lastname: lname.value,
-            email: email.value,
-            gender: gender.value,
-            permission_to_share: shareInformation.value == "all",
-            response: response.value
+    try{
+        let uuid = await $fetch(`${config.public.api}/entry/create`, {
+            method: "POST",
+            body: {
+                firstname: fname.value,
+                lastname: lname.value,
+                email: email.value,
+                gender: gender.value,
+                permission_to_share: shareInformation.value == "all",
+                response: response.value
+            }
+        })
+    } catch (error) {
+        if (error.response.status == 403){
+            alert("Bro, you did this shit before.")
+            router.push('/')
+        } else{
+            alert("Sorry, server error. Try again later.")
         }
-    })
+    }
     router.push(`/result?uuid=${uuid}`)
 }
 </script>
