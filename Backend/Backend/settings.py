@@ -30,10 +30,11 @@ if MODE == 'production':
 else:
     DEBUG = True
 
-ALLOWED_HOSTS = ["localhost"]
+ALLOWED_HOSTS = ["localhost", "api.oppmatch.org"]
 # Development settings - DO NOT use in production
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "https://brown.oppmatch.org"
 ]
 
 # Optional: Allow credentials (cookies, authorization headers)
