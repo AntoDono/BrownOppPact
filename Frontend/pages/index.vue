@@ -20,7 +20,7 @@
                     </div>
                 </div>
                 <div class="flex items-center justify-start flex-col z-20">
-                    <h2 class="font-urbanist text-3xl text-center">Does Opposite Attract,</h2>
+                    <h2 class="font-urbanist text-3xl text-center">Do Opposite Attract,</h2>
                     <h2 class="font-urbanist text-3xl text-center">Or Will You be Attacked?</h2>
                 </div>
                 <NuxtLink to="/match">
