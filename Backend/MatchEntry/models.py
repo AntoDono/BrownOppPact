@@ -148,7 +148,7 @@ def additionalQuestions():
             "max": {"text": "Agree", "value": 3}
         },
         {
-            "question": "If my concentration didn't make as much money, I would've done something else I loved.",
+            "question": "If my concentration didn't make as much money, I would've done something else.",
             "type": "slider",
             "id": 13,
             "min": {"text": "Disagree", "value": -3},
@@ -168,7 +168,7 @@ def additionalQuestions():
             "choices": [
                 {"text": "Hangout with my friends/families one last time.", "value": -2},
                 {"text": "Try things I have never done before, both legal and illegal.", "value": -1},
-                {"text": "Commit crimes.", "value": 1},
+                {"text": "Learn the knowledge that I never got to learn.", "value": 1},
                 {"text": "Scroll reels for the last time 😩", "value": 2}
             ]
         },
