@@ -245,6 +245,7 @@ const submit = async () => {
                 response: response.value
             }
         })
+        router.push(`/result?uuid=${uuid}`)
     } catch (error) {
         if (error.response.status == 403){
             alert("Bro, you did this shit before.")
@@ -253,7 +254,6 @@ const submit = async () => {
             alert("Sorry, server error. Try again later.")
         }
     }
-    router.push(`/result?uuid=${uuid}`)
 }
 </script>
 
