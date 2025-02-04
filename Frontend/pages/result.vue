@@ -32,8 +32,8 @@
                         <h2 class="font-lexend text-3xl text-center">Your Opp</h2>
                         <p class="font-lexend text-md text-justify">{{ userData["summary"]["opp"] }}</p>
                     </div>
-                    <h2 class="font-lexend text-2xl text-center text-secondary">CHECK YOUR SPAM! An email with a link to you results (this page) has been sent.</h2>
-                    <h2 class="font-lexend text-2xl text-center text-secondary">Re-check once in a while, new updates will be posted here.</h2>
+                    <h2 class="font-lexend text-2xl text-center text-secondary">CHECK YOUR SPAM! An email with a link to your results (this page) has been sent.</h2>
+                    <h2 class="font-lexend text-2xl text-center text-secondary">Re-check this once in a while, new updates will be posted here.</h2>
                     <div class="w-full flex gap-y-4 flex-col mt-10">
                         <h2 class="font-lexend text-2xl text-center">Your Opp? It will be released soon 😉, just be patient.</h2>
                         <h2 class="font-lexend text-2xl text-center">After all, we all need to run on a little hate...</h2>
