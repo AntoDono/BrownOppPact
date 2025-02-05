@@ -1,8 +1,5 @@
 <template>
     <div class="h-screen w-full bg-background1 overflow-hidden">
-        <Head>
-            <meta name="google-site-verification" content="5qEOJHm1A7CU2JSz15XId286UvxUt6Uc0DdemAqq-Ig" />
-        </Head>
         <div>
             <div ref="strings">
 
@@ -63,6 +60,15 @@ useSeoMeta({
   description: 'Tired of the marriage pact? Welcome to Opp Pact, where opposite attracts... or full of surprises.',
   ogDescription: 'Tired of the marriage pact? Welcome to Opp Pact, where opposite attracts... or full of surprises',
   ogImage: `https://brown.oppmatch.org/cover.png`
+})
+
+useHead({
+  meta: [
+    {
+      name: 'google-site-verification',
+      content: '5qEOJHm1A7CU2JSz15XId286UvxUt6Uc0DdemAqq-Ig'
+    }
+  ]
 })
 
 onMounted(async () => {
