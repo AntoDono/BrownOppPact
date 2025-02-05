@@ -57,7 +57,7 @@ const redline = ref(null)
 useSeoMeta({
   title: 'Find Your Opp at Brown University',
   ogTitle: 'Opp Match',
-  description: 'Tired of the marriage pact? Welcome to Opp Pact, where opposite attracts... or full of surprises.',
+  description: 'Tired of the Brown Marriage Pact? Welcome to Opp Pact, where opposite attracts... or full of surprises.',
   ogDescription: 'Tired of the marriage pact? Welcome to Opp Pact, where opposite attracts... or full of surprises',
   ogImage: `https://brown.oppmatch.org/cover.png`
 })
