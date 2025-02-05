@@ -94,7 +94,7 @@
         </div>
         <div v-for="(q, index) in questions"
             class="h-screen w-screen min-h-screen box-content text-white bg-background1 grid grid-rows-[20%_30_40%_10%] snap-center snap-always">
-            <div class="w-full h-full flex flex-col items-center justify-center p-8 z-10">
+            <div class="w-full h-full flex flex-col items-center justify-center p-4 z-10">
                 <h2 class="lg:text-4xl text-xl font-lexend text-center">{{ q["question"] }}</h2>
             </div>
             <div class="w-full h-full flex justify-center items-center z-10">
@@ -119,7 +119,7 @@
                 </div>
             </div>
             <div v-else-if="q['type'] == 'choice'" class="w-full h-full flex justify-center items-center p-4 z-10">
-                <div :id="`qc${q['id']}`" class="w-[60%] min-w-[300px] flex flex-col gap-y-4">
+                <div :id="`qc${q['id']}`" class="w-[60%] min-w-[300px] flex flex-col gap-y-2">
                     <div v-for="(choice, index) in q['choices']" :id="`qc-child-${q['id']}-${index}`" class="w-full border-3 border-gray-300 lg:p-4 p-2 rounded-xl
                     hover:cursor-pointer hover:scale-[103%] transition-all hover:border-gray-50 duration-300"
                         @click="() => respondQuestion(q['question'], q['id'], choice['value'], choice['text'], `qc-child-${q['id']}-${index}`)">
@@ -127,7 +127,7 @@
                     </div>
                 </div>
             </div>
-            <div v-if="index + 1 == numOfQuestions" class="w-screen h-fit flex justify-center">
+            <div v-if="index + 1 == numOfQuestions" class="w-screen h-fit flex justify-center p-4">
                 <Button1 v-if="Object.keys(response).length == numOfQuestions && basicInfoValid" class="hover:cursor-pointer">
                     <p class="text-xl p-2" @click="submit">Find Your Opp</p>
                 </Button1>

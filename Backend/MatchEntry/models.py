@@ -210,6 +210,36 @@ def getQuestions():
     random.shuffle(questions)
     return questions
 
+
+def recompile_answers(embeddings):
+    # Gather all question sources
+    questions = (
+        MBTIQuestions() + 
+        viewpointQuestions() + 
+        controversialQuestion() + 
+        additionalQuestions()
+    )
+    
+    compiled_answers = []
+
+    for i, value in enumerate(embeddings):
+        question_entry = next(q for q in questions if q["id"] == i)
+        question_text = question_entry["question"]
+        
+        if question_entry["type"] == "slider":
+            answer_text = value  # Slider value is the answer itself
+        elif question_entry["type"] == "choice":
+            # Find the choice text corresponding to the value
+            answer_text = next(choice["text"] for choice in question_entry["choices"] if choice["value"] == value)
+
+        compiled_answers.append({
+            "question": question_text,
+            "answer": answer_text,
+            "value": value
+        })
+    
+    return compiled_answers
+
 CACHED_MAX_SCORE = None
 def maxScore():
     global CACHED_MAX_SCORE

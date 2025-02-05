@@ -2,7 +2,7 @@
     <div class="h-screen w-full bg-background1 overflow-hidden">
         <div>
             <div ref="strings">
-                
+
             </div>
             <div class="fixed w-full h-full flex flex-col justify-center items-center gap-y-10 text-white">
                 <div>
@@ -15,7 +15,8 @@
                             <h2 class="font-lexend text-5xl text-center">
                                 Hate
                             </h2>
-                            <div ref="redline" class="fixed top-0 h-screen w-[3px] bg-secondary opacity-80 z-10 animate-pulse"></div>
+                            <div ref="redline"
+                                class="fixed top-0 h-screen w-[3px] bg-secondary opacity-80 z-10 animate-pulse"></div>
                         </div>
                     </div>
                 </div>
@@ -24,7 +25,9 @@
                     <h2 class="font-urbanist text-3xl text-center">Or Will You be Attacked?</h2>
                 </div>
                 <NuxtLink to="/match">
-                    <Button1 class="z-20 hover:cursor-pointer"><p class="text-xl font-urbanist">Match Me</p></Button1>
+                    <Button1 class="z-20 hover:cursor-pointer">
+                        <p class="text-xl font-urbanist">Match Me</p>
+                    </Button1>
                 </NuxtLink>
             </div>
         </div>
@@ -37,7 +40,7 @@
                 <div class="h-full w-8 bg-primary"></div>
                 <div class="h-full w-8 bg-secondary"></div>
             </div>
-            <img ref="bowtie" src="~assets/images/bow.png" class="w-64"/>
+            <img ref="bowtie" src="~assets/images/bow.png" class="w-64" />
         </div>
     </div>
 </template>
@@ -51,10 +54,18 @@ const bowtie = ref(null)
 const cover = ref(null)
 const redline = ref(null)
 
-onMounted(async()=>{
+useSeoMeta({
+  title: 'Find Your Opp at Brown University',
+  ogTitle: 'Opp Match',
+  description: 'Tired of the marriage pact? Welcome to Opp Pact, where opposite attracts... or full of surprises.',
+  ogDescription: 'Tired of the marriage pact? Welcome to Opp Pact, where opposite attracts... or full of surprises',
+  ogImage: `https://brown.oppmatch.org/cover.png`
+})
+
+onMounted(async () => {
     gsap.set(horizontal.value, {
         translateY: `${0.5 * (window.innerHeight - horizontal.value.offsetHeight)}px`
-    }) 
+    })
 
     gsap.set(vertical.value, {
         translateX: `${0.5 * (window.innerWidth - vertical.value.offsetWidth)}px`
@@ -67,7 +78,7 @@ onMounted(async()=>{
 
     gsap.set(redline.value, {
         y: -window.innerHeight
-    }) 
+    })
 
     const timeline = gsap.timeline()
 
@@ -78,7 +89,7 @@ onMounted(async()=>{
         ease: "bounce.inOut",
         display: "none"
     })
-    
+
     timeline.to(vertical.value, {
         delay: 0.3,
         duration: 0.7,
@@ -118,26 +129,24 @@ onMounted(async()=>{
 </script>
 
 <style>
-
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-    opacity: 0.7;
-  }
-  50% {
-    transform: rotate(180deg);
-    opacity: 0.15;
-  }
-  100% {
-    transform: rotate(360deg);
-    opacity: 0.7;
-  }
+    0% {
+        transform: rotate(0deg);
+        opacity: 0.7;
+    }
+
+    50% {
+        transform: rotate(180deg);
+        opacity: 0.15;
+    }
+
+    100% {
+        transform: rotate(360deg);
+        opacity: 0.7;
+    }
 }
 
-.spin-slow{
+.spin-slow {
     animation: spin 15s linear infinite;
 }
-
-
-
 </style>
