@@ -2,7 +2,7 @@
     <div class="fixed left-[-3em] bottom-0 z-10 bg-transparent flex flex-col items-center font-lexend social">
         <div class="flex flex-col justify-center items-center mb-32">
             <div class="rotate-90 pl-25">
-                <a href="https://youweizhen.com" target="_blank" class="font-lexend text-background3 hover:text-background2 duration-300">Youwei Zhen</a>
+                <a href="https://youweizhen.com" target="_blank" class="font-lexend text-background3 hover:text-background2 duration-300">AntoDono</a>
             </div>
         </div>
         <div class="flex flex-col justify-items-center items-center gap-y-5 mb-28">

@@ -15,7 +15,7 @@
             </socialMedia>
         </div>
         <a href="https://github.com/AntoDono" target="_blank" class="text-sm font-lexend text-background3 link text-center">
-            Designed & built by Youwei Zhen • MIT License
+            Designed & built by Anthony Zhen MIT License
         </a>
     </footer>
 </template>
