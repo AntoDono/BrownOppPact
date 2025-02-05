@@ -127,7 +127,7 @@
                     </div>
                 </div>
             </div>
-            <div v-if="index + 1 == numOfQuestions" class="w-screen h-fit flex justify-center p-4">
+            <div v-if="index + 1 == numOfQuestions" class="w-screen h-fit flex justify-center p-4 z-20">
                 <Button1 v-if="Object.keys(response).length == numOfQuestions && basicInfoValid" class="hover:cursor-pointer">
                     <p class="text-xl p-2" @click="submit">Find Your Opp</p>
                 </Button1>
