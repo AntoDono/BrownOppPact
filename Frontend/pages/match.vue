@@ -40,7 +40,7 @@
                         <option disabled>Select gender</option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
-                        <option value="helicopter">AttackHelicopter</option>
+                        <!-- <option value="helicopter">AttackHelicopter</option> -->
                         <option value="non-binary">Non-binary</option>
                         <option value="transgender">Transgender</option>
                         <option value="genderqueer">Genderqueer</option>
