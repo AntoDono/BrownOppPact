@@ -1,5 +1,8 @@
 <template>
     <div class="h-screen w-full bg-background1 overflow-hidden">
+        <Head>
+            <meta name="google-site-verification" content="5qEOJHm1A7CU2JSz15XId286UvxUt6Uc0DdemAqq-Ig" />
+        </Head>
         <div>
             <div ref="strings">
 
