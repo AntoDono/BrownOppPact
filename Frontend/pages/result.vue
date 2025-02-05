@@ -52,8 +52,8 @@ const userData = ref(null)
 const config = useRuntimeConfig()
 
 const scoreComment = (score)=>{
-    if (score < 3333) return "Wow, you are kind of an NPC."
-    else if (score >= 3333 && score < 6666) return "Okay icic, you kinda unique."
+    if (score < 5500) return "Wow, you are kind of an NPC."
+    else if (score >= 5500 && score < 7000) return "Okay icic, you kinda unique."
     else return "Wow, you are quite a character."
 }
 

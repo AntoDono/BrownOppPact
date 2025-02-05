@@ -83,6 +83,7 @@ def createEntry(request):
             lname = data["lastname"].lower().capitalize()
             email = data["email"]
             gender = data["gender"]
+            classof = data["classof"]
             response = data["response"]
             perm_to_share = data["permission_to_share"]
             mbti = getMBTI(response)
@@ -133,7 +134,7 @@ def createEntry(request):
                     retries += 1
                     print(f"Error parsing json, retrying {retries}/5")
 
-            entry = MatchEntry(firstname=fname, lastname=lname, email=email, gender=gender, mbti=mbti, embedding=embedding, summary=res, score=score, permission_to_share=perm_to_share)
+            entry = MatchEntry(firstname=fname, lastname=lname, email=email, gender=gender, mbti=mbti, embedding=embedding, summary=res, score=score, permission_to_share=perm_to_share, classof=classof)
             entry.save()
         
             email_thread = threading.Thread(target=send_email_async, args=(entry,))

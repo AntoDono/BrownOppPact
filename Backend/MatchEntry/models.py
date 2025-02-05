@@ -276,6 +276,7 @@ class MatchEntry(models.Model):
     gender = models.CharField(max_length=128, choices=GENDER_CHOICES)
     embedding = models.JSONField(default=list)
     score = models.IntegerField()
+    classof = models.IntegerField(default=2028)
     summary = models.JSONField(default=dict)
     permission_to_share = models.BooleanField(default=False)
     uuid = models.CharField(max_length=128, default=uuid4)
