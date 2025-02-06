@@ -156,6 +156,8 @@ def createEntry(request):
         print(e)
         return HttpResponseServerError()
     
+import time
+
 @csrf_exempt
 @login_required
 def sendEngagementEmail(request):
@@ -163,15 +165,26 @@ def sendEngagementEmail(request):
         if request.method == "POST":
             users = MatchEntry.objects.all()
             for user in users:
-                email_thread = threading.Thread(target=send_email_async, 
-                args=('engagement.html', 'Opposites in your AREA!', {"{{NAME}}": user.firstname, "{{COUNT_SIGNUPS}}":  str(len(users))}, user.email))
+                email_thread = threading.Thread(
+                    target=send_email_async,
+                    args=(
+                        'engagement.html',
+                        'Opposites in your AREA!',
+                        {"{{NAME}}": user.firstname, "{{COUNT_SIGNUPS}}": str(len(users))},
+                        user.email
+                    )
+                )
                 email_thread.start()
-            return JsonResponse({"message": "Emails successfully sent!"})
+                
+                time.sleep(1)  # Introduce a delay (1 second per email)
+
+            return JsonResponse({"message": "Emails are being sent in batches!"})
         else:
             return HttpResponseNotFound()
     except Exception as e:
         print(e)
         return HttpResponseServerError()
+
     
 @csrf_exempt
 @login_required  # Ensures only admin users can access
