@@ -61,12 +61,7 @@ const config = useRuntimeConfig()
 
 const formatSimilarity = (similarity) => {
     let percentage = (similarity * 100).toFixed(2);
-
-    if (similarity < 0) {
-        return `${Math.abs(percentage)}% opposite`;
-    } else {
-        return `${percentage}% similar`;
-    }
+    return `${percentage}%`
 }
 
 const scoreComment = (score)=>{
