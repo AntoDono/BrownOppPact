@@ -27,12 +27,13 @@ SECRET_KEY = 'django-insecure-^^3t!)#^j!mnjp*m0383ukh7@+oe2u8sw_9t28kr2o2a*4flg9
 # SECURITY WARNING: don't run with debug turned on in production!
 if MODE == 'production':
     DEBUG = False
-    ALLOWED_HOSTS = ["api.oppmatch.org"]
+    ALLOWED_HOSTS = ["api.oppmatch.org", "brown-oppmatch-api.antodono.com"]
     CORS_ALLOWED_ORIGINS = [
         "https://brown.oppmatch.org"
     ]
     CSRF_TRUSTED_ORIGINS = [
         'https://api.oppmatch.org',
+        'https://brown-oppmatch-api.antodono.com'
     ]
 else:
     ALLOWED_HOSTS = ["localhost"]
