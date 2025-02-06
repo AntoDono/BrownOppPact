@@ -23,7 +23,7 @@
                         <h2 class="font-lexend text-6xl ml-7 p-2 text-secondary">{{ userData["opp"]["initials"] }}</h2>
                         <div class="flex items-center justify-center flex-row gap-x-2">
                             <label class="font-lexend text-xl">Similarity: </label>
-                            <h2 class="font-urbanist text-xl font-bold text-secondary"> {{ (userData["opp"]["similarity"] * 100).toFixed(2) }} %</h2>
+                            <h2 class="font-urbanist text-xl font-bold text-secondary"> {{ formatSimilarity((userData["opp"]["similarity"])) }}</h2>
                         </div>
                     </div>
                 </div>
@@ -58,6 +58,16 @@
 const route = useRoute()
 const userData = ref(null)
 const config = useRuntimeConfig()
+
+const formatSimilarity = (similarity) => {
+    let percentage = (similarity * 100).toFixed(2);
+
+    if (similarity < 0) {
+        return `${Math.abs(percentage)}% opposite`;
+    } else {
+        return `${percentage}% similar`;
+    }
+}
 
 const scoreComment = (score)=>{
     if (score < 5500) return "Wow, you are kind of an NPC."

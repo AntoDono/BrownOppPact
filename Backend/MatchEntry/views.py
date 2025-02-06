@@ -29,27 +29,29 @@ FRONTEND_URL = os.getenv("FRONTEND_URL")
 
 BASE_DIR = os.getcwd()
 
-def send_email_async(entry):
+def send_email_async(email_template, title, replaces:dict, receiver_email):
     try:
         msg = MIMEMultipart()
         msg["From"] = GMAIL_USER
-        msg["To"] = entry.email
-        msg["Subject"] = "OppMatch - Confirmation"
+        msg["To"] = receiver_email
+        msg["Subject"] = title
         
-        with open(f"{BASE_DIR}/email_templates/confirmation.html", "r", encoding="utf-8") as file:
+        with open(f"{BASE_DIR}/email_templates/{email_template}", "r", encoding="utf-8") as file:
             html_content = file.read()
             
-        html_content = html_content.replace("{{NAME}}", entry.firstname)
-        html_content = html_content.replace("{{LINK}}", f"{FRONTEND_URL}/result?uuid={entry.uuid}")
+        for key in replaces.keys():
+            html_content = html_content.replace(key, replaces[key])
+            
+        # html_content = html_content.replace("{{LINK}}", f"{FRONTEND_URL}/result?uuid={entry.uuid}")
         msg.attach(MIMEText(html_content, "html"))
 
         server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
         server.starttls()  # Upgrade to secure connection
         server.login(GMAIL_USER, GMAIL_PASSWORD)
-        server.sendmail(GMAIL_USER, entry.email, msg.as_string())
+        server.sendmail(GMAIL_USER, receiver_email, msg.as_string())
         server.quit()
 
-        print(f"Email sent successfully to {entry.email}!")
+        print(f"Email sent successfully to {receiver_email}!")
     except Exception as e:
         print(f"Error sending email: {e}")
 
@@ -140,7 +142,9 @@ def createEntry(request):
             entry = MatchEntry(firstname=fname, lastname=lname, email=email, gender=gender, mbti=mbti, embedding=embedding, summary=res, score=score, permission_to_share=perm_to_share, classof=classof)
             entry.save()
         
-            email_thread = threading.Thread(target=send_email_async, args=(entry,))
+            email_thread = threading.Thread(target=send_email_async, 
+                args=('confirmation.html', 'OppMatch - Confirmation', {"{{NAME}}": entry.firstname, "{{LINK}}":  f"{FRONTEND_URL}/result?uuid={entry.uuid}"},
+                      entry.email))
             email_thread.start()
 
             return HttpResponse(entry.uuid)
@@ -148,6 +152,23 @@ def createEntry(request):
             return HttpResponseNotFound()
     except KeyError as e:
         return HttpResponseBadRequest()
+    except Exception as e:
+        print(e)
+        return HttpResponseServerError()
+    
+@csrf_exempt
+@login_required
+def sendEngagementEmail(request):
+    try:
+        if request.method == "POST":
+            users = MatchEntry.objects.all()
+            for user in users:
+                email_thread = threading.Thread(target=send_email_async, 
+                args=('engagement.html', 'Opposites in your AREA!', {"{{NAME}}": user.firstname, "{{COUNT_SIGNUPS}}":  str(len(users))}, user.email))
+                email_thread.start()
+            return JsonResponse({"message": "Emails successfully sent!"})
+        else:
+            return HttpResponseNotFound()
     except Exception as e:
         print(e)
         return HttpResponseServerError()
@@ -174,10 +195,10 @@ def assign_opps(request):
                         similarity_matrix[i, j] = np.dot(entries[i].embedding, entries[j].embedding) / (
                             np.linalg.norm(entries[i].embedding) * np.linalg.norm(entries[j].embedding)
                         )
-
+                        
+            np.fill_diagonal(similarity_matrix, 1000)
             cost_matrix = similarity_matrix 
             # print(cost_matrix)
-
             # Solve the assignment problem using the Hungarian algorithm
             # minimum weight matching in bipartite
             row_ind, col_ind = linear_sum_assignment(cost_matrix)

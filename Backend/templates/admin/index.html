@@ -1,17 +1,25 @@
 {% extends "admin/index.html" %}
 
 {% block content %}
-    <div style="padding: 1rem 0 1rem 0">
-        <button id="assign-opps-btn" class="button" style="padding: 0.5rem; background-color: blue; color: white; text-decoration: none; border-radius: 5px;">
-            Assign Opps
-        </button>
-    </div>
-    
-    <!-- This paragraph will display the response message -->
-    <p id="response-message" style="color: green;"></p>
+    <span>
+        <div style="padding: 1rem 0 1rem 0">
+            <button id="assign-opps-btn" class="button" style="padding: 0.5rem; background-color: blue; color: white; text-decoration: none; border-radius: 5px;">
+                Assign Opps
+            </button>
+        </div>
 
-    {{ block.super }}
+        <div style="padding: 1rem 0 1rem 0">
+            <button id="engagement-btn" class="button" style="padding: 0.5rem; background-color: blue; color: white; text-decoration: none; border-radius: 5px;">
+                Send Engagement Email
+            </button>
+        </div>
+        
+        <!-- This paragraph will display the response message -->
+        <p id="response-message" style="color: green;"></p>
 
+        {{ block.super }}
+
+    </span>
     <script>
         document.getElementById("assign-opps-btn").addEventListener("click", function() {
             fetch("/entry/assign_opps", {
@@ -31,5 +39,24 @@
                 document.getElementById("response-message").innerText = "An error occurred!";
             });
         });
+
+        document.getElementById("engagement-btn").addEventListener("click", function() {
+                fetch("/entry/engagement_email", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": "{{ csrf_token }}",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("response-message").innerText = data.message;
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    document.getElementById("response-message").innerText = "An error occurred!";
+                });
+            });
     </script>
 {% endblock %}
