@@ -14,6 +14,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import threading
 import numpy as np
+import time
 
 load_dotenv()
 LLM_ENDPOINT = os.getenv("LLM_ENDPOINT")
@@ -156,35 +157,45 @@ def createEntry(request):
         print(e)
         return HttpResponseServerError()
     
-import time
-
 @csrf_exempt
 @login_required
 def sendEngagementEmail(request):
     try:
         if request.method == "POST":
             users = MatchEntry.objects.all()
-            for user in users:
-                email_thread = threading.Thread(
-                    target=send_email_async,
-                    args=(
-                        'engagement.html',
-                        'Opposites in your AREA!',
-                        {"{{NAME}}": user.firstname, "{{COUNT_SIGNUPS}}": str(len(users))},
-                        user.email
-                    )
-                )
-                email_thread.start()
-                
-                time.sleep(5)  # Introduce a delay (1 second per email)
+            total_users = len(users)
+            estimated_time = total_users * 5  # 5 seconds per email
 
-            return JsonResponse({"message": "Emails are being sent in batches!"})
+            # Background function for sending emails
+            def send_emails():
+                for user in users:
+                    try:
+                        send_email_async(
+                            'engagement.html',
+                            'Opposites in your AREA 😈!',
+                            {"{{NAME}}": user.firstname, "{{COUNT_SIGNUPS}}": str(total_users)},
+                            user.email
+                        )
+                        time.sleep(5)  # Wait 5 seconds per email to avoid rate limits
+                    except Exception as e:
+                        print(f"Error sending email to {user.email}: {e}")
+
+            # Start the email sending process in a background thread
+            email_thread = threading.Thread(target=send_emails)
+            email_thread.daemon = True  # Ensure thread does not block app shutdown
+            email_thread.start()
+
+            # Return response immediately with estimated time
+            return JsonResponse({
+                "message": "Emails are being sent in the background.",
+                "total_recipients": total_users,
+                "estimated_completion_time_seconds": estimated_time
+            })
         else:
             return HttpResponseNotFound()
     except Exception as e:
         print(e)
         return HttpResponseServerError()
-
     
 @csrf_exempt
 @login_required  # Ensures only admin users can access
