@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponseNotFound, JsonResponse, HttpResponseBadRequest, HttpResponse, HttpResponseServerError, HttpResponseForbidden
 from MatchEntry.models import getQuestions, maxScore, getMBTI, MatchEntry
+from scipy.optimize import linear_sum_assignment
 import json
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 import requests
 from dotenv import load_dotenv
 import os
@@ -11,6 +13,7 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import threading
+import numpy as np
 
 load_dotenv()
 LLM_ENDPOINT = os.getenv("LLM_ENDPOINT")
@@ -145,6 +148,65 @@ def createEntry(request):
             return HttpResponseNotFound()
     except KeyError as e:
         return HttpResponseBadRequest()
+    except Exception as e:
+        print(e)
+        return HttpResponseServerError()
+    
+@csrf_exempt
+@login_required  # Ensures only admin users can access
+def assign_opps(request):
+    try:
+        if request.method == "POST":
+
+            print("Assigning opps...")
+            
+            entries = list(MatchEntry.objects.all())
+            num_entries = len(entries)
+
+            if num_entries % 2 != 0:
+                return JsonResponse({"message": "Odd number of entries. Cannot form perfect pairs."}, status=400)
+
+            similarity_matrix = np.zeros((num_entries, num_entries))
+
+            for i in range(num_entries):
+                for j in range(num_entries):
+                    if i != j:  # Skip self-matching
+                        similarity_matrix[i, j] = np.dot(entries[i].embedding, entries[j].embedding) / (
+                            np.linalg.norm(entries[i].embedding) * np.linalg.norm(entries[j].embedding)
+                        )
+
+            cost_matrix = similarity_matrix 
+            # print(cost_matrix)
+
+            # Solve the assignment problem using the Hungarian algorithm
+            # minimum weight matching in bipartite
+            row_ind, col_ind = linear_sum_assignment(cost_matrix)
+            
+            matched_pairs = []
+            assigned_indices = set()
+
+            for i in range(len(row_ind)):
+                entry1 = entries[row_ind[i]]
+                entry2 = entries[col_ind[i]]
+
+                if row_ind[i] in assigned_indices or col_ind[i] in assigned_indices:
+                    continue  # Skip already assigned entries
+
+                entry1.opp = entry2
+                entry2.opp = entry1
+                entry1.save()
+                entry2.save()
+
+                matched_pairs.append((entry1.email, entry2.email, similarity_matrix[row_ind[i], col_ind[i]]))
+                assigned_indices.add(row_ind[i])
+                assigned_indices.add(col_ind[i])
+
+            for match in matched_pairs:
+                print(f"{match[0]} matched with {match[1]} | score: {match[2]}")
+
+            return JsonResponse({"message": "Opps successfully assigned!"})
+        
+        return JsonResponse({"message": "Invalid request"}, status=400)
     except Exception as e:
         print(e)
         return HttpResponseServerError()

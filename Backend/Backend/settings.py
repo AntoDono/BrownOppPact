@@ -38,9 +38,11 @@ else:
     ALLOWED_HOSTS = ["localhost"]
     CORS_ALLOWED_ORIGINS = [
         "http://localhost:3000",
+        "http://127.0.0.0.1:3000",
     ]
     CSRF_TRUSTED_ORIGINS = [
         'http://localhost:8000',
+        'http://127.0.0.1:8000',
     ]
     DEBUG = True
 
@@ -77,7 +79,7 @@ ROOT_URLCONF = 'Backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

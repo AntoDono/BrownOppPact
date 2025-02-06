@@ -280,13 +280,31 @@ class MatchEntry(models.Model):
     summary = models.JSONField(default=dict)
     permission_to_share = models.BooleanField(default=False)
     uuid = models.CharField(max_length=128, default=uuid4)
+    opp = models.ForeignKey(
+        "self",  # Refers to the same model
+        on_delete=models.SET_NULL,  # Prevents deletion cascade
+        null=True,
+        blank=True,
+        related_name="related_entries"  # Allows reverse lookup
+    )
 
     def __str__(self):
         return self.email
     
     def serialize(self):
-        return {"firstname": self.firstname, "lastname": self.lastname, "mbti": self.mbti,
+        serialized =  {"firstname": self.firstname, "lastname": self.lastname, "mbti": self.mbti,
                 "summary": self.summary, "score": self.score}
+        if self.opp:
+            serialized["opp"] = {
+                "initials": self.opp.firstname[0].upper() + self.opp.lastname[0].upper(),
+                # "mbti": self.opp.mbti,
+                # "score": self.opp.score,
+                "similarity": 
+                    np.dot(self.opp.embedding, self.embedding) /
+                    (np.linalg.norm(self.opp.embedding) * np.linalg.norm(self.embedding))
+            }
+            
+        return serialized
     
     class Meta:
         verbose_name_plural = "Match Entries"

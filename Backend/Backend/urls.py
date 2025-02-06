@@ -23,4 +23,5 @@ urlpatterns = [
     path('entry/questions', meViews.allQuestions),
     path('entry/create', meViews.createEntry),
     path('entry/get', meViews.retrieveUser),
+    path("entry/assign_opps", meViews.assign_opps, name="assign_opps"),
 ]

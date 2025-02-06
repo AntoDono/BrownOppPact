@@ -7,7 +7,7 @@
                 <p class="text-center">Based on our analysis, we conclude:</p>
             </div>
             <div class="w-full flex flex-col justify-around gap-y-10 text-white font-urbanist text-xl">
-                <div class="w-full flex justify-around flex-row flex-wrap">
+                <div class="w-full flex justify-around flex-row flex-wrap gap-x-4 gap-y-4">
                     <div>
                         <label class="font-lexend text-2xl">Estimated MBTI:</label>
                         <h2 class="font-lexend text-6xl ml-7 p-2 text-secondary">{{ userData["mbti"] }}</h2>
@@ -17,6 +17,14 @@
                         <h2 class="font-lexend text-6xl pt-2 text-secondary">{{ userData["score"] }}</h2>
                         <h2 class="font-lexend text-2xl ml-14 text-white">/10000</h2>
                         <p class="font-urbanist text-sm p-2 text-white">{{ scoreComment(userData["score"]) }}</p>
+                    </div>
+                    <div v-if="userData['opp']">
+                        <label class="font-lexend text-2xl">Opp's Initials:</label>
+                        <h2 class="font-lexend text-6xl ml-7 p-2 text-secondary">{{ userData["opp"]["initials"] }}</h2>
+                        <div class="flex items-center justify-center flex-row gap-x-2">
+                            <label class="font-lexend text-xl">Similarity: </label>
+                            <h2 class="font-urbanist text-xl font-bold text-secondary"> {{ (userData["opp"]["similarity"] * 100).toFixed(2) }} %</h2>
+                        </div>
                     </div>
                 </div>
                 <div class="w-full flex justify-center flex-col gap-y-10">
@@ -35,7 +43,7 @@
                     <h2 class="font-lexend text-2xl text-center text-secondary">CHECK YOUR SPAM! An email with a link to your results (this page) has been sent.</h2>
                     <h2 class="font-lexend text-2xl text-center text-secondary">Re-check this once in a while, new updates will be posted here.</h2>
                     <div class="w-full flex gap-y-4 flex-col mt-10">
-                        <h2 class="font-lexend text-2xl text-center">Your Opp? It will be released soon 😉, just be patient.</h2>
+                        <h2 v-if="!userData['opp']" class="font-lexend text-2xl text-center">Your Opp? It will be released soon 😉, just be patient.</h2>
                         <h2 class="font-lexend text-2xl text-center">After all, we all need to run on a little hate...</h2>
                         <h2 class="font-lexend text-2xl text-center">or cross the thin line and ask them out for valentines LMFAOO.</h2>
                     </div>
