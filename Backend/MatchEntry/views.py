@@ -176,7 +176,7 @@ def sendEngagementEmail(request):
                 )
                 email_thread.start()
                 
-                time.sleep(1)  # Introduce a delay (1 second per email)
+                time.sleep(5)  # Introduce a delay (1 second per email)
 
             return JsonResponse({"message": "Emails are being sent in batches!"})
         else:
