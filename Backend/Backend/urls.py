@@ -25,4 +25,5 @@ urlpatterns = [
     path('entry/get', meViews.retrieveUser),
     path("entry/assign_opps", meViews.assign_opps, name="assign_opps"),
     path("entry/engagement_email", meViews.sendEngagementEmail, name="engagement_email"),
+    path("entry/update_email", meViews.sendUpdateEmail, name="update_email"),
 ]

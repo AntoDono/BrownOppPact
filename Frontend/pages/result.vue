@@ -26,6 +26,7 @@
                             <h2 class="font-urbanist text-xl font-bold text-secondary"> {{ formatSimilarity((userData["opp"]["similarity"])) }}</h2>
                         </div>
                     </div>
+                    <p v-if="userData['opp']" class="font-urbanist text-sm text-white text-center"> 0% Similarity means nothing in common. Negative similarity means in the opposite direction.</p>
                 </div>
                 <div class="w-full flex justify-center flex-col gap-y-10">
                     <div class="w-full flex flex-col gap-y-5">

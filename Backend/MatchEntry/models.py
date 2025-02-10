@@ -280,6 +280,7 @@ class MatchEntry(models.Model):
     summary = models.JSONField(default=dict)
     permission_to_share = models.BooleanField(default=False)
     uuid = models.CharField(max_length=128, default=uuid4)
+    disabled = models.BooleanField(default=False)
     opp = models.ForeignKey(
         "self",  # Refers to the same model
         on_delete=models.SET_NULL,  # Prevents deletion cascade
