@@ -215,7 +215,7 @@ def sendResultEmail(request):
                         send_email_async(
                             'results.html',
                             'Results - OppMatch 😈!',
-                            {"{{FULLNAME}}": f"{user.firstname} {user.lastname}", "{{EMAIL}}": user.email, "{{SCORE}}": str(round(similarty * 100, 2))},
+                            {"{{FULLNAME}}": f"{user.opp.firstname} {user.opp.lastname}", "{{EMAIL}}": user.opp.email, "{{SCORE}}": str(round(similarty * 100, 2))},
                             user.email
                         )
                         time.sleep(5)  # Wait 5 seconds per email to avoid rate limits
