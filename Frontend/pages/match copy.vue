@@ -207,7 +207,6 @@ const validateEmail = () => {
 onMounted(async () => {
     let qs = await $fetch(`${config.public.api}/entry/questions`)
     questions.value = qs.questions
-    if (questions.value.length == 0) router.push('/closed')
     numOfQuestions.value = Object.keys(questions.value).length
 })
 

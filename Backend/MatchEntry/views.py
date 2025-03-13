@@ -200,6 +200,47 @@ def sendEngagementEmail(request):
     
 @csrf_exempt
 @login_required
+def sendResultEmail(request):
+    try:
+        if request.method == "POST":
+            users = MatchEntry.objects.all()
+            total_users = len(users)
+            estimated_time = total_users * 5  # 5 seconds per email
+
+            # Background function for sending emails
+            def send_emails():
+                for user in users:
+                    try:
+                        similarty = user.serialize()["opp"]["similarity"]
+                        send_email_async(
+                            'results.html',
+                            'Results - OppMatch 😈!',
+                            {"{{FULLNAME}}": f"{user.firstname} {user.lastname}", "{{EMAIL}}": user.email, "{{SCORE}}": str(round(similarty * 100, 2))},
+                            user.email
+                        )
+                        time.sleep(5)  # Wait 5 seconds per email to avoid rate limits
+                    except Exception as e:
+                        print(f"Error sending email to {user.email}: {e}")
+
+            # Start the email sending process in a background thread
+            email_thread = threading.Thread(target=send_emails)
+            email_thread.daemon = True  # Ensure thread does not block app shutdown
+            email_thread.start()
+
+            # Return response immediately with estimated time
+            return JsonResponse({
+                "message": "Result Emails are being sent in the background.",
+                "total_recipients": total_users,
+                "estimated_completion_time_seconds": estimated_time
+            })
+        else:
+            return HttpResponseNotFound()
+    except Exception as e:
+        print(e)
+        return HttpResponseServerError()
+    
+@csrf_exempt
+@login_required
 def sendUpdateEmail(request):
     try:
         if request.method == "POST":

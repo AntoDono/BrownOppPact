@@ -208,7 +208,8 @@ def additionalQuestions():
 def getQuestions():
     questions = MBTIQuestions() + viewpointQuestions() + controversialQuestion() + additionalQuestions()
     random.shuffle(questions)
-    return questions
+    # return questions
+    return []
 
 
 def recompile_answers(embeddings):
